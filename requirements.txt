@@ -1,0 +1,7 @@
+# Python dependencies for the recommender system and its evaluation.
+# Install with:  pip install -r requirements.txt
+pandas>=1.3
+numpy>=1.21
+scikit-learn>=1.0
+matplotlib>=3.4
+Pillow>=8.0

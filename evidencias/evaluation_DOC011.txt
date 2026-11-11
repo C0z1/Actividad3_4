@@ -1,0 +1,46 @@
+EVIDENCE — EVALUATION (Activity 4)
+Command: python evaluate.py --id DOC011 --k 5
+Run: 2026-11-10 18:06
+============================================================
+
+==============================================================================
+RECOMMENDER SYSTEM EVALUATION (Activity 4)
+==============================================================================
+Seed document      : DOC011 — Support Ticket: VPN Disconnection Issues
+Information need    : documents in category 'Support/Incidents'
+Top-K evaluated     : 5
+Corpus size         : 33 documents (32 candidates after excluding the seed)
+Relevant in corpus  : 7 documents (same category as seed)
+
+Top-K recommendations returned by the system:
+  1. DOC016  score=0.2939  [FAQ] FAQ: Connecting to the Company VPN  -> not relevant
+  2. DOC013  score=0.1161  [Support/Incidents] Support Ticket: Password Reset Request  -> RELEVANT
+  3. DOC001  score=0.1043  [Policy/Process] Remote Work Policy  -> not relevant
+  4. DOC010  score=0.0710  [Support/Incidents] Support Ticket: Email Delivery Failure  -> RELEVANT
+  5. DOC015  score=0.0499  [Support/Incidents] Support Ticket: Software Installation Access Denied  -> RELEVANT
+
+Ground truth vs. retrieved (relevant OR retrieved rows shown):
+Document Ground Truth    Retrieved   Title
+------------------------------------------------------------------------------
+DOC001   Not Relevant    Yes         Remote Work Policy
+DOC008   Relevant        No          Incident Report: Login Service Outage
+DOC009   Relevant        No          Incident Report: Database Latency Spike
+DOC010   Relevant        Yes         Support Ticket: Email Delivery Failure
+DOC012   Relevant        No          Support Ticket: Printer Not Responding
+DOC013   Relevant        Yes         Support Ticket: Password Reset Request
+DOC014   Relevant        No          Incident Report: API Returning 500 Errors
+DOC015   Relevant        Yes         Support Ticket: Software Installation Access Denied
+DOC016   Not Relevant    Yes         FAQ: Connecting to the Company VPN
+
+Confusion matrix counts:
+  True Positives  (relevant & retrieved)     : 3
+  False Positives (not relevant but retrieved): 2
+  False Negatives (relevant but missed)       : 4
+  True Negatives  (not relevant & not retrieved): 23
+
+Evaluation metrics (scikit-learn):
+  Precision : 0.6000
+  Recall    : 0.4286
+  F1-score  : 0.5000
+
+Saved visualization to: evidencias/confusion_matrix.png

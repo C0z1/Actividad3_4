@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: A4; margin: 18mm 18mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #1f2933; font-size: 10.5pt; line-height: 1.45; margin: 0;
+  }
+  h1 { font-size: 17pt; margin: 0 0 2px; color: #14213d; }
+  .sub { color: #52606d; font-size: 9.5pt; margin: 0 0 14px; }
+  h2 {
+    font-size: 11.5pt; color: #14213d; margin: 16px 0 5px;
+    border-bottom: 2px solid #2a6fdb; padding-bottom: 3px;
+  }
+  p { margin: 5px 0; text-align: justify; }
+  ul { margin: 4px 0 4px 0; padding-left: 18px; }
+  li { margin: 2px 0; }
+  code { background: #eef2f7; padding: 0 3px; border-radius: 3px; font-size: 9pt; }
+  .metrics {
+    width: 100%; border-collapse: collapse; margin: 6px 0 2px;
+    font-size: 9.5pt;
+  }
+  .metrics th, .metrics td { border: 1px solid #cbd2d9; padding: 4px 8px; text-align: left; }
+  .metrics th { background: #14213d; color: #fff; }
+  .metrics tr:nth-child(even) td { background: #f5f7fa; }
+  .pill { display: inline-block; background: #2a6fdb; color: #fff; border-radius: 10px;
+          padding: 1px 9px; font-size: 8.5pt; margin-right: 4px; }
+  .video { background: #eef2f7; border-left: 4px solid #2a6fdb; padding: 8px 12px; margin-top: 6px; }
+  .foot { margin-top: 16px; color: #7b8794; font-size: 8pt; border-top: 1px solid #e4e7eb; padding-top: 6px; }
+</style>
+</head>
+<body>
+
+<h1>Document Recommender System — Technical Report</h1>
+<p class="sub">
+  TF-IDF content-based recommender &amp; scikit-learn evaluation &nbsp;·&nbsp;
+  Author: Felix (@C0z1) &nbsp;·&nbsp; November 2026
+</p>
+
+<h2>1. Description of the approach</h2>
+<p>
+  The system is a <strong>content-based recommender</strong> built on the
+  <strong>TF-IDF + cosine similarity</strong> approach (Path A), chosen for its
+  simplicity and transparency: every recommendation score can be traced directly to
+  the words the documents share. The corpus holds <strong>33 documents</strong> across
+  five categories — Policy/Process, Support/Incidents, FAQ, Meeting Minutes and
+  News/Article — stored in <code>corpus.csv</code> with the columns
+  <code>id, title, text, category</code>.
+</p>
+<p>
+  Each document's <em>title + text</em> is lowercased, stripped of punctuation and
+  vectorized with <code>TfidfVectorizer</code> (English stop-words, unigrams and
+  bigrams). Similarity between any two documents — or between a free-text query and
+  every document — is the cosine of their vectors. The recommender ranks all documents
+  and returns the <strong>Top-5</strong>, excluding the seed itself. Two input
+  modalities are supported: a <strong>seed document ID</strong>
+  (<code>--id DOC011</code>) and a <strong>free-text query</strong>
+  (<code>--query "..."</code>).
+</p>
+<p>
+  The results are coherent. A VPN support ticket retrieves the VPN FAQ as its top match
+  (score 0.29), and the free-text query <em>"I forgot my password and I am locked out"</em>
+  returns the account-recovery FAQ (0.41) and the password-reset ticket (0.24) — exactly
+  the documents a help desk would reach for.
+</p>
+
+<h2>2. Evaluation summary</h2>
+<p>
+  Quality was measured with scikit-learn, defining relevance automatically: a document
+  is relevant when it shares the seed's category. For the seed
+  <code>DOC011</code> (VPN Disconnection) at Top-5:
+</p>
+<table class="metrics">
+  <tr><th>Metric</th><th>Result</th><th>Meaning</th></tr>
+  <tr><td>Precision</td><td>0.60</td><td>3 of the 5 returned documents were relevant (low noise).</td></tr>
+  <tr><td>Recall</td><td>0.43</td><td>3 of the 7 relevant documents were found (partial coverage).</td></tr>
+  <tr><td>F1-score</td><td>0.50</td><td>Balanced score; good precision limited by coverage.</td></tr>
+</table>
+<p>
+  Confusion matrix: <span class="pill">TP 3</span><span class="pill">FP 2</span>
+  <span class="pill">FN 4</span><span class="pill">TN 23</span>.
+  The system favours <strong>precision over recall</strong> — expected, since Top-5
+  cannot cover all 7 relevant documents. It returns a short, mostly-correct list rather
+  than a wide one, which builds user trust at the cost of some missed knowledge.
+</p>
+
+<h2>3. Development areas of opportunity (improvements)</h2>
+<ul>
+  <li><strong>Semantic embeddings (Path B).</strong> TF-IDF matches words, not meaning,
+      so synonyms ("login" vs "sign-in") and paraphrases are missed. A
+      <code>sentence-transformers</code> model would raise recall.</li>
+  <li><strong>Metadata &amp; role-based filters.</strong> Adding product, recency,
+      author and permissions would raise precision and ensure users only see documents
+      they are allowed to access (security by design).</li>
+  <li><strong>Adaptive result size.</strong> A score threshold or a tuned <em>K</em> would
+      let the retrieved-set size adapt to the query instead of always returning five.</li>
+  <li><strong>Hybrid retrieval &amp; query expansion.</strong> Combining lexical (TF-IDF)
+      and semantic signals, plus expanding queries with related terms, handles ambiguity
+      and short documents better.</li>
+  <li><strong>Human-labeled ground truth &amp; continuous evaluation.</strong> Category-based
+      relevance is a convenient but pessimistic yardstick (the VPN FAQ, genuinely useful,
+      is counted as a false positive). Human labels and ongoing metric tracking would give
+      a fairer, drift-aware measure of quality as the corpus grows.</li>
+</ul>
+
+<h2>4. Organizational reflection — video</h2>
+<div class="video">
+  <strong>Reflection video link:</strong>
+  <em>[ PASTE YOUR VIDEO LINK HERE before submitting ]</em><br>
+  The script/talking points (why this reduces rework, the limitations, and what to
+  improve for production) and the infographic content are in <code>ANALYSIS.md</code>,
+  sections A.2 and B.4.
+</div>
+
+<div class="foot">
+  Full code, dataset and test evidence: see the repository README and the
+  <code>evidencias/</code> folder. Recommender: <code>recommender.py</code> ·
+  Evaluation: <code>evaluate.py</code>.
+</div>
+
+</body>
+</html>

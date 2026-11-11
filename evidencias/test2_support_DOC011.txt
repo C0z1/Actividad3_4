@@ -1,0 +1,18 @@
+EVIDENCE — TEST 2
+Modality: Seed document by ID (Option 1)
+Category: Support/Incidents
+Command: python recommender.py --id DOC011
+Run: 2026-11-10 18:06
+============================================================
+
+
+SEED DOCUMENT: DOC011 | Support Ticket: VPN Disconnection Issues | category=Support/Incidents
+Top-5 most similar documents:
+
+Rank DocID    Score    Category            Title
+------------------------------------------------------------------------------
+1    DOC016   0.2939   FAQ                 FAQ: Connecting to the Company VPN
+2    DOC013   0.1161   Support/Incidents   Support Ticket: Password Reset Request
+3    DOC001   0.1043   Policy/Process      Remote Work Policy
+4    DOC010   0.0710   Support/Incidents   Support Ticket: Email Delivery Failure
+5    DOC015   0.0499   Support/Incidents   Support Ticket: Software Installation Access Denied

@@ -1,0 +1,18 @@
+EVIDENCE — TEST 1
+Modality: Seed document by ID (Option 1)
+Category: Policy/Process
+Command: python recommender.py --id DOC001
+Run: 2026-11-10 18:06
+============================================================
+
+
+SEED DOCUMENT: DOC001 | Remote Work Policy | category=Policy/Process
+Top-5 most similar documents:
+
+Rank DocID    Score    Category            Title
+------------------------------------------------------------------------------
+1    DOC016   0.1142   FAQ                 FAQ: Connecting to the Company VPN
+2    DOC011   0.1043   Support/Incidents   Support Ticket: VPN Disconnection Issues
+3    DOC031   0.0923   News/Article        The Rise of Remote and Hybrid Work
+4    DOC005   0.0780   Policy/Process      Information Security Policy
+5    DOC028   0.0759   News/Article        Company Opens New Regional Office

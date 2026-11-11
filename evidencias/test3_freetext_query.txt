@@ -1,0 +1,17 @@
+EVIDENCE — TEST 3
+Modality: Free-text query (Option 2)
+Command: python recommender.py --query "I forgot my password and I am locked out of my account"
+Run: 2026-11-10 18:06
+============================================================
+
+
+QUERY TEXT: "I forgot my password and I am locked out of my account"
+Top-5 most similar documents:
+
+Rank DocID    Score    Category            Title
+------------------------------------------------------------------------------
+1    DOC020   0.4131   FAQ                 FAQ: Recovering Account Access
+2    DOC013   0.2374   Support/Incidents   Support Ticket: Password Reset Request
+3    DOC015   0.0386   Support/Incidents   Support Ticket: Software Installation Access Denied
+4    DOC010   0.0362   Support/Incidents   Support Ticket: Email Delivery Failure
+5    DOC016   0.0355   FAQ                 FAQ: Connecting to the Company VPN
